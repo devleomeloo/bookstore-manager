@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Publisher {
+public class Publisher extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
