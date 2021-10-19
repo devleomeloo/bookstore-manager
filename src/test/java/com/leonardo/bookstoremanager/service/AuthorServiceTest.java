@@ -48,7 +48,7 @@ public class AuthorServiceTest {
 
         //when
         when(authorRepository.save(expectedCreatedAuthor)).thenReturn(expectedCreatedAuthor);
-        when(authorRepository.findByName(expectedAuthorToCreateDTO.getName())).thenReturn(Optional.empty());
+        //when(authorRepository.findByName(expectedAuthorToCreateDTO.getName())).thenReturn(Optional.empty());
 
         AuthorDTO createdAuthorDTO = authorService.create(expectedAuthorToCreateDTO);
 
