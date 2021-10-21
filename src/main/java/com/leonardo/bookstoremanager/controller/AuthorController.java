@@ -16,7 +16,7 @@ public class AuthorController implements AuthorControllerDocs{
 
     @Autowired
     public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
+            this.authorService = authorService;
     }
 
     @PostMapping
