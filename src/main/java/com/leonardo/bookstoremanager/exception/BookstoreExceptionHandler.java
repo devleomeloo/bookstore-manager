@@ -46,11 +46,11 @@ public class BookstoreExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> errors = new ArrayList<>();
         exception.getBindingResult().getFieldErrors()
                 .forEach(fieldError -> errors.add(
-                        "Field" + fieldError.getField().toUpperCase() + " " + fieldError.getDefaultMessage()));
+                        "Field " + fieldError.getField().toUpperCase() + " " + fieldError.getDefaultMessage()));
 
         exception.getBindingResult().getGlobalErrors()
                 .forEach(globalErrors -> errors.add(
-                        "Object" + globalErrors.getObjectName() + " " + globalErrors.getDefaultMessage()));
+                        "Object " + globalErrors.getObjectName() + " " + globalErrors.getDefaultMessage()));
 
         return buildResponseEntity(HttpStatus.BAD_REQUEST, "Informed argument(s) validation error(s)", errors);
     }
