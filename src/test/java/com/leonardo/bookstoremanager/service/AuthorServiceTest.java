@@ -125,9 +125,21 @@ public class AuthorServiceTest {
 
         Long expectedDeletedAuthorId = expectedDeletedAuthor.getId();
         doNothing().when(authorRepository).deleteById(expectedDeletedAuthorId);
+        when(authorRepository.findById(expectedDeletedAuthorId)).thenReturn(Optional.of(expectedDeletedAuthor));
 
         authorService.delete(expectedDeletedAuthorId);
 
         verify(authorRepository, times(1)).deleteById(expectedDeletedAuthorId);
+        verify(authorRepository, times(1)).findById(expectedDeletedAuthorId);
+
+    }
+
+    @Test
+    void whenInvalidAuthorIdIsGivenThenAnExceptionShouldBeThrow() {
+        var expectedInvalidAuthorId = 2L;
+
+        when(authorRepository.findById(expectedInvalidAuthorId)).thenReturn(Optional.empty());
+
+        assertThrows(AuthorNotFoundException.class, () -> authorService.delete(expectedInvalidAuthorId));
     }
 }
