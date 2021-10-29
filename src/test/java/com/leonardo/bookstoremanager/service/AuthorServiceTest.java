@@ -22,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthorServiceTest {
@@ -116,5 +116,18 @@ public class AuthorServiceTest {
         List<AuthorDTO> foundAuthorsDTO = authorService.findAll();
 
         assertThat(foundAuthorsDTO.size(), is(0));
+    }
+
+    @Test
+    void whenValidIdIsGivenThenItShouldBeDeleted() {
+        AuthorDTO expectedDeletedAuthorDTO = authorDTOBuilder.buildAuthorDTO();
+        Author expectedDeletedAuthor = authorMapper.toModel(expectedDeletedAuthorDTO);
+
+        Long expectedDeletedAuthorId = expectedDeletedAuthor.getId();
+        doNothing().when(authorRepository).deleteById(expectedDeletedAuthorId);
+
+        authorService.delete(expectedDeletedAuthorId);
+
+        verify(authorRepository, times(1)).deleteById(expectedDeletedAuthorId);
     }
 }
