@@ -1,5 +1,7 @@
 package com.leonardo.bookstoremanager.service;
 
+import com.leonardo.bookstoremanager.dto.PublisherDTO;
+import com.leonardo.bookstoremanager.entitys.Publisher;
 import com.leonardo.bookstoremanager.mapper.PublisherMapper;
 import com.leonardo.bookstoremanager.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +17,12 @@ public class PublisherService {
     @Autowired
     public PublisherService(PublisherRepository publisherRepository) {
         this.publisherRepository = publisherRepository;
+    }
+
+    public PublisherDTO create(PublisherDTO publisherDTO){
+        Publisher publisherToCreate = publisherMapper.INSTANCE.toModel(publisherDTO);
+        Publisher createdPublisher = publisherRepository.save(publisherToCreate);
+
+        return publisherMapper.toDTO(createdPublisher);
     }
 }
