@@ -2,10 +2,13 @@ package com.leonardo.bookstoremanager.service;
 
 import com.leonardo.bookstoremanager.dto.PublisherDTO;
 import com.leonardo.bookstoremanager.entitys.Publisher;
+import com.leonardo.bookstoremanager.exception.PublisherAlreadyExistsException;
 import com.leonardo.bookstoremanager.mapper.PublisherMapper;
 import com.leonardo.bookstoremanager.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class PublisherService {
@@ -19,10 +22,21 @@ public class PublisherService {
         this.publisherRepository = publisherRepository;
     }
 
+
     public PublisherDTO create(PublisherDTO publisherDTO){
+
+        verifyIfExists(publisherDTO.getName(), publisherDTO.getCode());
+
         Publisher publisherToCreate = publisherMapper.INSTANCE.toModel(publisherDTO);
         Publisher createdPublisher = publisherRepository.save(publisherToCreate);
 
         return publisherMapper.toDTO(createdPublisher);
+    }
+
+    private void verifyIfExists(String name, String code) {
+        Optional<Publisher> duplicatedPublisher = publisherRepository.findByNameOrCode(name, code);
+        if (duplicatedPublisher.isPresent()){
+            throw new PublisherAlreadyExistsException(name, code);
+        }
     }
 }
