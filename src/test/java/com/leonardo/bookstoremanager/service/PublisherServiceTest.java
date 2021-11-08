@@ -3,6 +3,7 @@ package com.leonardo.bookstoremanager.service;
 import com.leonardo.bookstoremanager.dto.PublisherDTO;
 import com.leonardo.bookstoremanager.entitys.Publisher;
 import com.leonardo.bookstoremanager.exception.PublisherAlreadyExistsException;
+import com.leonardo.bookstoremanager.exception.PublisherNotFoundException;
 import com.leonardo.bookstoremanager.mapper.PublisherMapper;
 import com.leonardo.bookstoremanager.publishers.builder.PublisherDTOBuilder;
 import com.leonardo.bookstoremanager.repository.PublisherRepository;
@@ -63,5 +64,29 @@ public class PublisherServiceTest {
                 expectedPublisherToCreateDTO.getCode())).thenReturn(Optional.of(expectedPublisherDuplicated));
         
         assertThrows(PublisherAlreadyExistsException.class, () -> publisherService.create(expectedPublisherToCreateDTO));
+    }
+
+    @Test
+    void whenValidIdIsGivenThenAPublisherShouldBeReturned() {
+        PublisherDTO expectedPublisherFoundDTO = publisherDTOBuilder.buildPublisherDTO();
+        Publisher expectedPublisherFound = publisherMapper.toModel(expectedPublisherFoundDTO);
+
+        when(publisherRepository.findById(expectedPublisherFound.getId())).thenReturn(Optional.of(expectedPublisherFound));
+
+        var expectedPublisherFoundId = expectedPublisherFoundDTO.getId();
+        PublisherDTO foundPublisherDTO = publisherService.findById(expectedPublisherFoundId);
+
+        assertThat(foundPublisherDTO, is(equalTo(foundPublisherDTO)));
+    }
+
+    @Test
+    void whenInvalidIdIsGivenThenAnExceptionShouldBeThrown() {
+        PublisherDTO expectedPublisherFoundDTO = publisherDTOBuilder.buildPublisherDTO();
+
+        var expectedPublisherFoundId = expectedPublisherFoundDTO.getId();
+
+        when(publisherRepository.findById(expectedPublisherFoundId)).thenReturn(Optional.empty());
+
+        assertThrows(PublisherNotFoundException.class, () -> publisherService.findById(expectedPublisherFoundId));
     }
 }
