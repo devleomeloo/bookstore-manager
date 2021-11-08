@@ -25,4 +25,9 @@ public class PublisherController {
         return publisherService.create(publisherDTO);
     }
 
+    @GetMapping("/{id}")
+    public PublisherDTO findById(@PathVariable Long id) {
+        return publisherService.findById(id);
+    }
+
 }
