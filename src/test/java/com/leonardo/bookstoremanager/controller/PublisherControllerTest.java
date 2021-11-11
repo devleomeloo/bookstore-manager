@@ -59,17 +59,17 @@ public class PublisherControllerTest {
 
     @Test
     void whenGETWithValidIdIsCalledThenOkStatusShouldBeInformed() throws Exception {
-        PublisherDTO expectedFoundPublisherDTO = publisherDTOBuilder.buildPublisherDTO();
-        when(publisherService.findById(expectedFoundPublisherDTO.getId()))
-                .thenReturn(expectedFoundPublisherDTO);
+        PublisherDTO expectedCreatedPublisherDTO = publisherDTOBuilder.buildPublisherDTO();
+        Long expectedCreatedPublisherDTOId = expectedCreatedPublisherDTO.getId();
 
-        mockMvc.perform(get(PUBLISHER_API_URL_PATH + "/" + expectedFoundPublisherDTO.getId())
+        when(publisherService.findById(expectedCreatedPublisherDTOId))
+                .thenReturn(expectedCreatedPublisherDTO);
+
+        mockMvc.perform(get(PUBLISHER_API_URL_PATH + "/" + expectedCreatedPublisherDTOId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(expectedFoundPublisherDTO.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(expectedFoundPublisherDTO.getName())))
-                .andExpect(jsonPath("$.code", is(expectedFoundPublisherDTO.getCode())))
-                .andExpect(jsonPath("$.foundationDate", is(expectedFoundPublisherDTO.getFoundationDate())));
-
+                .andExpect(jsonPath("$.id", is(expectedCreatedPublisherDTOId.intValue())))
+                .andExpect(jsonPath("$.name", is(expectedCreatedPublisherDTO.getName())))
+                .andExpect(jsonPath("$.code", is(expectedCreatedPublisherDTO.getCode())));
     }
 }
