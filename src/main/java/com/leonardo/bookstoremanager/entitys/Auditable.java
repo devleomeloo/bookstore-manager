@@ -25,5 +25,5 @@ public abstract class Auditable {
 
     @LastModifiedDate
     @Column(nullable = false)
-    protected LocalDateTime lastModifieldDate;
+    protected LocalDateTime lastModifiedDate;
 }

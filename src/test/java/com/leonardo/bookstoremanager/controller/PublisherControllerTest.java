@@ -19,9 +19,9 @@ import java.util.Collections;
 
 import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asPublisherJsonString;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -87,5 +87,16 @@ public class PublisherControllerTest {
                 .andExpect(jsonPath("$[0].id", is(expectedCreatedPublisherDTO.getId().intValue())))
                 .andExpect(jsonPath("$[0].name", is(expectedCreatedPublisherDTO.getName())))
                 .andExpect(jsonPath("$[0].code", is(expectedCreatedPublisherDTO.getCode())));
+    }
+
+    @Test
+    void whenDELETEPublisherIsCalledThenShouldBeDeleted() throws Exception {
+        PublisherDTO expectedDeletedPublisherDTO = publisherDTOBuilder.buildPublisherDTO();
+
+        doNothing().when(publisherService).delete(expectedDeletedPublisherDTO.getId());
+
+        mockMvc.perform(delete(PUBLISHER_API_URL_PATH + "/" + expectedDeletedPublisherDTO.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/v1/publishers")
 public class PublisherController {
 
-    private PublisherService publisherService;
+    private final PublisherService publisherService;
 
     @Autowired
     public PublisherController(PublisherService publisherService) {
@@ -35,4 +35,12 @@ public class PublisherController {
     public List<PublisherDTO> findAll() {
         return publisherService.findAll();
     }
+
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id){
+        publisherService.delete(id);
+    }
+
 }
