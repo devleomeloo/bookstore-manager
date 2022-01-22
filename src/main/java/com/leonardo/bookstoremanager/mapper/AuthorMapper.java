@@ -10,7 +10,7 @@ public interface AuthorMapper {
 
     AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
 
-    Author toAuthorModel(AuthorDTO authorDTO);
+    Author toModel(AuthorDTO authorDTO);
 
-    AuthorDTO toAuthorDTO(Author author);
+    AuthorDTO toDTO(Author author);
 }

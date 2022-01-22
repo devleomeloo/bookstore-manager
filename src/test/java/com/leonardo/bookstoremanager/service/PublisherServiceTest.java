@@ -50,7 +50,7 @@ public class PublisherServiceTest {
         when(publisherRepository.findByNameOrCode(expectedPublisherToCreateDTO.getName(),
                 expectedPublisherToCreateDTO.getCode())).thenReturn(Optional.empty());
 
-        when(publisherRepository.save(expectedPublisherCreated)).thenReturn(expectedPublisherCreated);
+        when(publisherRepository.save(any())).thenReturn(expectedPublisherCreated);
 
         PublisherDTO createdPublisherDTO = publisherService.create(expectedPublisherToCreateDTO);
 
@@ -122,9 +122,9 @@ public class PublisherServiceTest {
         Publisher expectedPublisherDeleted = publisherMapper.toModel(expectedPublisherDeletedDTO);
 
         //Act
+        when(publisherRepository.findById(expectedPublisherDeleted.getId())).thenReturn(Optional.of(expectedPublisherDeleted));
         doNothing().when(publisherRepository).deleteById(expectedPublisherDeleted.getId());
         publisherService.delete(expectedPublisherDeleted.getId());
-        when(publisherRepository.findById(expectedPublisherDeleted.getId())).thenReturn(Optional.of(expectedPublisherDeleted));
 
         //Assert
         verify(publisherRepository, times(1)).deleteById(expectedPublisherDeleted.getId());

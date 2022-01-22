@@ -28,22 +28,22 @@ public class AuthorService {
 
         verifyIfExists(authorDTO.getName());
 
-        Author authorToCreate = authorMapper.toAuthorModel(authorDTO);
+        Author authorToCreate = authorMapper.toModel(authorDTO);
         Author createdAuthor = authorRepository.save(authorToCreate);
 
-        return authorMapper.toAuthorDTO(createdAuthor);
+        return authorMapper.toDTO(createdAuthor);
     }
 
     public AuthorDTO findById(Long id){
         Author foundAuthor = verifyAndGetAuthor(id);
 
-        return authorMapper.toAuthorDTO(foundAuthor);
+        return authorMapper.toDTO(foundAuthor);
     }
 
     public List<AuthorDTO> findAll(){
         return authorRepository.findAll()
                 .stream()
-                .map(authorMapper::toAuthorDTO)
+                .map(authorMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
