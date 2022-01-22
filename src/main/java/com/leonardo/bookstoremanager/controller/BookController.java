@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/books")
 public class BookController {
 
     @ApiOperation(value = "API Example")
@@ -17,6 +17,6 @@ public class BookController {
     })
     @GetMapping
     public String test(){
-        return "Test !";
+        return "BookStore Manager API !";
     }
 }
