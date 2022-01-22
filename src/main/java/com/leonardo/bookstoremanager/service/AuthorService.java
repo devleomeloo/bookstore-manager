@@ -17,7 +17,7 @@ public class AuthorService {
 
     private final static AuthorMapper authorMapper = AuthorMapper.INSTANCE;
 
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
     @Autowired
     public AuthorService(AuthorRepository authorRepository) {
@@ -28,22 +28,22 @@ public class AuthorService {
 
         verifyIfExists(authorDTO.getName());
 
-        Author authorToCreate = authorMapper.INSTANCE.toModel(authorDTO);
+        Author authorToCreate = authorMapper.toAuthorModel(authorDTO);
         Author createdAuthor = authorRepository.save(authorToCreate);
 
-        return authorMapper.toDTO(createdAuthor);
+        return authorMapper.toAuthorDTO(createdAuthor);
     }
 
     public AuthorDTO findById(Long id){
         Author foundAuthor = verifyAndGetAuthor(id);
 
-        return authorMapper.toDTO(foundAuthor);
+        return authorMapper.toAuthorDTO(foundAuthor);
     }
 
     public List<AuthorDTO> findAll(){
         return authorRepository.findAll()
                 .stream()
-                .map(authorMapper::toDTO)
+                .map(authorMapper::toAuthorDTO)
                 .collect(Collectors.toList());
     }
 
@@ -53,9 +53,8 @@ public class AuthorService {
     }
 
     private Author verifyAndGetAuthor(Long id) {
-        Author foundAuthor = authorRepository.findById(id)
+        return authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(id));
-        return foundAuthor;
     }
 
     private void verifyIfExists(String authorName) {
