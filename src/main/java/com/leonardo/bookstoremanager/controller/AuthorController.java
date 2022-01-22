@@ -28,7 +28,8 @@ public class AuthorController implements AuthorControllerDocs{
     }
 
     @GetMapping("{id}")
-    public AuthorDTO findById(@PathVariable Long id) {
+    public AuthorDTO findById(
+            @PathVariable Long id) {
         return authorService.findById(id);
     }
 
@@ -39,7 +40,8 @@ public class AuthorController implements AuthorControllerDocs{
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(
+            @PathVariable Long id) {
         authorService.delete(id);
     }
 }
