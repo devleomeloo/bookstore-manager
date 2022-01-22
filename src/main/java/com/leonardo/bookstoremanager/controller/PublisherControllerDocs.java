@@ -23,7 +23,7 @@ public interface PublisherControllerDocs {
             @ApiResponse(code = 200, message = "Success - Publisher found"),
             @ApiResponse(code = 404, message = "Publisher not found error code ")
     })
-    PublisherDTO findById(Long Id);
+    PublisherDTO findById(Long id);
 
     @ApiOperation(value = "List all registered publishers")
     @ApiResponses(value = {

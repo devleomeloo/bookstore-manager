@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Service
 public class PublisherService {
 
-    private final static PublisherMapper publisherMapper = PublisherMapper.INSTANCE;
+    private static final PublisherMapper publisherMapper = PublisherMapper.INSTANCE;
 
-    private PublisherRepository publisherRepository;
+    private final PublisherRepository publisherRepository;
 
     @Autowired
     public PublisherService(PublisherRepository publisherRepository) {
@@ -30,7 +30,7 @@ public class PublisherService {
 
         verifyIfExists(publisherDTO.getName(), publisherDTO.getCode());
 
-        Publisher publisherToCreate = publisherMapper.INSTANCE.toModel(publisherDTO);
+        Publisher publisherToCreate = publisherMapper.toModel(publisherDTO);
         Publisher createdPublisher = publisherRepository.save(publisherToCreate);
 
         return publisherMapper.toDTO(createdPublisher);

@@ -14,6 +14,8 @@ import java.util.Map;
 @EndpointWebExtension(endpoint = InfoEndpoint.class)
 public class InfoWebPointExtension {
 
+    private final int STATUS = 200;
+
     @Autowired
     private InfoEndpoint delegate;
 
@@ -28,6 +30,6 @@ public class InfoWebPointExtension {
     }
 
     private Integer getStatus(Map<String, Object> info) {
-        return 200;
+        return STATUS;
     }
 }

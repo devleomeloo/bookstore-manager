@@ -23,7 +23,7 @@ public interface AuthorControllerDocs {
             @ApiResponse(code = 200, message = "Success - Author found"),
             @ApiResponse(code = 404, message = "Author not found error code ")
     })
-    AuthorDTO findById(Long Id);
+    AuthorDTO findById(Long id);
 
     @ApiOperation(value = "List all Author registered")
     @ApiResponses(value = {

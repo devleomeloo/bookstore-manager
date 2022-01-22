@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorService {
 
-    private final static AuthorMapper authorMapper = AuthorMapper.INSTANCE;
+    private static final  AuthorMapper authorMapper = AuthorMapper.INSTANCE;
 
     private final AuthorRepository authorRepository;
 
