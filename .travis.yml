@@ -17,5 +17,5 @@ cache:
     - $HOME/.m2
 #    - $HOME/.sonar/cache
 #
-#before_install:
-#  - chmod +x mvnw
+before_install:
+  - chmod +x mvnw
