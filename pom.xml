@@ -88,13 +88,13 @@
 		</dependency>
 	</dependencies>
 
-<!--	<profiles>
+	<profiles>
 		<profile>
 			<id>sonar</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
+<!--			<properties>
 				<sonar.host.url>https://sonarcloud.io/</sonar.host.url>
 				<sonar.exclusions>
 					src/main/java/**/BookstoremanagerApplication.java,
@@ -103,7 +103,7 @@
 					src/main/java/**/dto/**,
 					src/main/java/**/entity/**
 				</sonar.exclusions>
-			</properties>
+			</properties>-->
 			<build>
 				<plugins>
 					<plugin>
@@ -144,7 +144,7 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>-->
+	</profiles>
 
 	<build>
 		<plugins>
