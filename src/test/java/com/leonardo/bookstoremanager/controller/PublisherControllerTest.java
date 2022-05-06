@@ -49,6 +49,16 @@ class PublisherControllerTest {
     }
 
     @Test
+    void whenPOSTIsCalledThenSuccessStatusShouldBeInformed() throws Exception {
+        PublisherDTO expectedCreatedPublisherDTO = publisherDTOBuilder.buildPublisherDTO();
+
+        mockMvc.perform(post(PUBLISHER_API_URL_PATH)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asPublisherJsonString(expectedCreatedPublisherDTO)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
     void whenPOSTIsCalledWithoutRequiredFieldsThenBadRequestStatusShouldBeInformed() throws Exception {
         PublisherDTO expectedCreatedPublisherDTO = publisherDTOBuilder.buildPublisherDTO();
         expectedCreatedPublisherDTO.setName(null);
