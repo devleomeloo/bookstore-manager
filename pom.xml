@@ -14,7 +14,7 @@
 	<name>bookstoremanager</name>
 	<description>Bookstore Manager Project</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>18</java.version>
 		<swagger.version>2.9.2</swagger.version>
 		<swagger-annotations.version>1.5.21</swagger-annotations.version>
 		<swagger-models.version>1.5.21</swagger-models.version>
@@ -86,9 +86,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!--		Dependence to execute a sql script when the application is building-->
+<!--		<dependency>-->
+<!--			<groupId>org.flywaydb</groupId>-->
+<!--			<artifactId>flyway-core</artifactId>-->
+<!--		</dependency>-->
 	</dependencies>
 
-<!--	<profiles>
+	<profiles>
 		<profile>
 			<id>sonar</id>
 			<activation>
@@ -101,7 +106,9 @@
 					src/main/java/**/config/**,
 					src/main/java/**/exception/**,
 					src/main/java/**/dto/**,
-					src/main/java/**/entity/**
+					src/main/java/**/entity/**,
+					src/main/java/**/repository/**,
+					src/main/java/**
 				</sonar.exclusions>
 			</properties>
 			<build>
@@ -144,7 +151,7 @@
 				</plugins>
 			</build>
 		</profile>
-	</profiles>-->
+	</profiles>
 
 	<build>
 		<plugins>

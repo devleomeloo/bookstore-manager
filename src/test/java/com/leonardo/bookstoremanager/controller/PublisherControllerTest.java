@@ -90,7 +90,7 @@ class PublisherControllerTest {
     }
 
     @Test
-    void whenDELETEPublisherIsCalledThenShouldBeDeleted() throws Exception {
+    void whenDELETEPublisherIsCalledThenNoContentShouldBeInformed() throws Exception {
         PublisherDTO expectedDeletedPublisherDTO = publisherDTOBuilder.buildPublisherDTO();
 
         doNothing().when(publisherService).delete(expectedDeletedPublisherDTO.getId());
