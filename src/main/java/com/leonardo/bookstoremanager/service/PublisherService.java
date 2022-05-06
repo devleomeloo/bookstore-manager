@@ -46,7 +46,7 @@ public class PublisherService {
         return publisherRepository.findAll()
                 .stream()
                 .map(publisherMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void delete(Long id){

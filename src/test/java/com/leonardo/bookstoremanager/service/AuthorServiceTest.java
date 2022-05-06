@@ -88,10 +88,11 @@ class AuthorServiceTest {
     void whenInvalidIdIsGivenThenAnExceptionShouldBeThrown() {
 
         AuthorDTO expectedFoundAuthorDTO = authorDTOBuilder.buildAuthorDTO();
+        Long id = expectedFoundAuthorDTO.getId();
 
-        when(authorRepository.findById(expectedFoundAuthorDTO.getId())).thenReturn(Optional.empty());
+        when(authorRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(AuthorNotFoundException.class, () -> authorService.findById(expectedFoundAuthorDTO.getId()));
+        assertThrows(AuthorNotFoundException.class, () -> authorService.findById(id));
     }
 
     @Test

@@ -45,7 +45,7 @@ public class AuthorService {
         return authorRepository.findAll()
                 .stream()
                 .map(authorMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void delete(Long id){

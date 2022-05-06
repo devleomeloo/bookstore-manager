@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final static UserMapper userMapper = UserMapper.INSTANCE;
+    private static final UserMapper userMapper = UserMapper.INSTANCE;
 
     private UserRepository userRepository;
 

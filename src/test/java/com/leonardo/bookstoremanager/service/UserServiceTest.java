@@ -3,7 +3,6 @@ package com.leonardo.bookstoremanager.service;
 import com.leonardo.bookstoremanager.dto.MessageDTO;
 import com.leonardo.bookstoremanager.dto.UserDTO;
 import com.leonardo.bookstoremanager.entitys.User;
-import com.leonardo.bookstoremanager.exception.AuthorAlreadyExistsException;
 import com.leonardo.bookstoremanager.exception.UserAlreadyExistsException;
 import com.leonardo.bookstoremanager.mapper.UserMapper;
 import com.leonardo.bookstoremanager.repository.UserRepository;
@@ -24,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
     private final UserMapper userMapper = UserMapper.INSTANCE;
 
