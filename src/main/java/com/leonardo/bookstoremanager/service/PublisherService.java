@@ -53,8 +53,8 @@ public class PublisherService {
         publisherRepository.deleteById(id);
     }
 
-    private void verifyIfExists(Long id) {
-        publisherRepository.findById(id)
+    private Publisher verifyIfExists(Long id) {
+        return publisherRepository.findById(id)
                 .orElseThrow(() -> new PublisherNotFoundException(id));
     }
 
