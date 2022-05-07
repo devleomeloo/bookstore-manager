@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -25,11 +22,11 @@ public class UserDTO {
     @Size(max = 255)
     private String name;
 
-    @NotBlank
+    @NotNull
     @Max(120)
     private Integer age;
 
-    @NotBlank
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -43,7 +40,7 @@ public class UserDTO {
     @NotBlank
     private String password;
 
-    @NotBlank
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 }

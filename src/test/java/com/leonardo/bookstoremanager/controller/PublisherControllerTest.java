@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.Collections;
 
-import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asPublisherJsonString;
+import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asJsonString;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -54,7 +54,7 @@ class PublisherControllerTest {
 
         mockMvc.perform(post(PUBLISHER_API_URL_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asPublisherJsonString(expectedCreatedPublisherDTO)))
+                        .content(asJsonString(expectedCreatedPublisherDTO)))
                 .andExpect(status().isCreated());
     }
 
@@ -65,7 +65,7 @@ class PublisherControllerTest {
 
         mockMvc.perform(post(PUBLISHER_API_URL_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asPublisherJsonString(expectedCreatedPublisherDTO)))
+                .content(asJsonString(expectedCreatedPublisherDTO)))
                 .andExpect(status().isBadRequest());
     }
 
