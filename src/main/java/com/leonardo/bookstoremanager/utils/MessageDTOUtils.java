@@ -5,6 +5,10 @@ import com.leonardo.bookstoremanager.entitys.User;
 
 public class MessageDTOUtils {
 
+    private MessageDTOUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static MessageDTO creationMessage(User createdUser) {
         return returnMessage(createdUser,"created");
     }
