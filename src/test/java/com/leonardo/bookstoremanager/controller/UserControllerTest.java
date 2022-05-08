@@ -19,7 +19,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asJsonString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,4 +75,16 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void whenDELETEWithValidIdIsCalledThenNoContentShouldBeReturned() throws Exception {
+        UserDTO expectedUserDeletedDTO = userDTOBuilder.buildUserDTO();
+
+        var expectedUserDeletedId = expectedUserDeletedDTO.getId();
+        doNothing().when(userService).delete(expectedUserDeletedId);
+
+        mockMvc.perform(delete(USER_API_URL_PATH + "/" + expectedUserDeletedId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+    }
 }

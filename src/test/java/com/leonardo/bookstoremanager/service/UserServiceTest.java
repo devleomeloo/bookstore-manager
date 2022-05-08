@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -69,5 +69,29 @@ class UserServiceTest {
                 .thenReturn(Optional.of(expectedDuplicatedUser));
 
         assertThrows(UserAlreadyExistsException.class, () -> userService.create(expectedDuplicatedUserDTO));
+    }
+
+    @Test
+    void whenValidIdIsGivenThenItShouldBeDeleted() {
+        UserDTO expectedDeletedUserDTO = userDTOBuilder.buildUserDTO();
+        User expectedDeletedUser = userMapper.toModel(expectedDeletedUserDTO);
+
+        Long expectedDeletedUserId = expectedDeletedUser.getId();
+        doNothing().when(userRepository).deleteById(expectedDeletedUserId);
+        when(userRepository.findById(expectedDeletedUserId)).thenReturn(Optional.of(expectedDeletedUser));
+
+        userService.delete(expectedDeletedUserId);
+
+        verify(userRepository, times(1)).deleteById(expectedDeletedUserId);
+        verify(userRepository, times(1)).findById(expectedDeletedUserId);
+    }
+
+    @Test
+    void whenInvalidUserIdIsGivenThenAnExceptionShouldBeThrow() {
+        var expectedInvalidUserId = 2L;
+
+        when(userRepository.findById(expectedInvalidUserId)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.delete(expectedInvalidUserId));
     }
 }

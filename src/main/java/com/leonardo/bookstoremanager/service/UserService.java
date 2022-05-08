@@ -31,6 +31,16 @@ public class UserService {
         return creationMessage(createdUser);
     }
 
+    public void delete(Long id){
+        verifyAndGetUser(id);
+        userRepository.deleteById(id);
+    }
+
+    private User verifyAndGetUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
     private void verifyIfExists(String userEmail, String userName) {
         Optional<User> foundUser = userRepository.findByEmailOrUserName(userEmail, userName);
         if (foundUser.isPresent()){
