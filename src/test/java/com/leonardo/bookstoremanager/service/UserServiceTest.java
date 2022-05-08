@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,7 +43,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenNewUserIsInformedThenItShouldBeCreated(){
+    void whenPOSTUserIsInformedThenItShouldBeCreated(){
         UserDTO expectedCreatedUserDTO = userDTOBuilder.buildUserDTO();
         User expectedCreatedUser = userMapper.toModel(expectedCreatedUserDTO);
         String expectedCreationMessage = "User Leo Test with ID 1 successfully created!";
@@ -59,7 +61,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenExistsUserIsInformedThenItShouldBeCreated(){
+    void whenPOSTExistsUserIsInformedThenAnExceptionShouldBeThrow(){
         UserDTO expectedDuplicatedUserDTO = userDTOBuilder.buildUserDTO();
         User expectedDuplicatedUser = userMapper.toModel(expectedDuplicatedUserDTO);
         String email = expectedDuplicatedUser.getEmail();
@@ -72,31 +74,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenValidIdIsGivenThenItShouldBeDeleted() {
-        UserDTO expectedDeletedUserDTO = userDTOBuilder.buildUserDTO();
-        User expectedDeletedUser = userMapper.toModel(expectedDeletedUserDTO);
-
-        Long expectedDeletedUserId = expectedDeletedUser.getId();
-        doNothing().when(userRepository).deleteById(expectedDeletedUserId);
-        when(userRepository.findById(expectedDeletedUserId)).thenReturn(Optional.of(expectedDeletedUser));
-
-        userService.delete(expectedDeletedUserId);
-
-        verify(userRepository, times(1)).deleteById(expectedDeletedUserId);
-        verify(userRepository, times(1)).findById(expectedDeletedUserId);
-    }
-
-    @Test
-    void whenInvalidUserIdIsGivenThenAnExceptionShouldBeThrow() {
-        var expectedInvalidUserId = 2L;
-
-        when(userRepository.findById(expectedInvalidUserId)).thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class, () -> userService.delete(expectedInvalidUserId));
-    }
-
-    @Test
-    void whenExistingUserIsInformedThenItShouldBeUpdated(){
+    void whenUPDATEExistingUserIsInformedThenItShouldBeUpdated(){
         UserDTO expectedUpdatedUserDTO = userDTOBuilder.buildUserDTO();
         User expectedUpdatedUser = userMapper.toModel(expectedUpdatedUserDTO);
         String expectedUpdateMessage = "User Leo Test with ID 1 successfully updated!";
@@ -112,14 +90,68 @@ class UserServiceTest {
     }
 
     @Test
-    void whenNotExistingUserIsInformedThenAnExceptionShouldBeThrown(){
+    void whenUPDATENotExistingUserIsInformedThenAnExceptionShouldBeThrown(){
         UserDTO expectedUpdatedUserDTO = userDTOBuilder.buildUserDTO();
         User expectedUpdatedUser = userMapper.toModel(expectedUpdatedUserDTO);
+        Long id = expectedUpdatedUser.getId();
 
-        when(userRepository.findById(expectedUpdatedUser.getId()))
+        when(userRepository.findById(id))
                 .thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () ->
-                userService.update(expectedUpdatedUser.getId(), expectedUpdatedUserDTO));
+                userService.update(id, expectedUpdatedUserDTO));
     }
+
+    @Test
+    void whenGETExistingUserIsInformedThenItBeFound(){
+        UserDTO expectedFoundUserDTO = userDTOBuilder.buildUserDTO();
+        User expectedFoundUser = userMapper.toModel(expectedFoundUserDTO);
+
+        when(userRepository.findById(expectedFoundUser.getId()))
+                .thenReturn(Optional.of(expectedFoundUser));
+
+        UserDTO foundUser = userService.findById(expectedFoundUserDTO.getId());
+
+        assertThat(foundUser, is(equalTo(expectedFoundUserDTO)));
+
+    }
+
+    @Test
+    void whenGETAllUsersIsInformedThenItBeFound(){
+        List<UserDTO> expectedFoundUserDTO = List.of(userDTOBuilder.buildUserDTO());
+        User expectedFoundUser = userMapper.toModel(expectedFoundUserDTO.get(0));
+
+        when(userRepository.findAll())
+                .thenReturn(Collections.singletonList(expectedFoundUser));
+
+        List<UserDTO> foundUsers = userService.findAll();
+
+        assertThat(foundUsers, is(equalTo(expectedFoundUserDTO)));
+
+    }
+
+    @Test
+    void whenDELETEValidIdIsGivenThenItShouldBeDeleted() {
+        UserDTO expectedDeletedUserDTO = userDTOBuilder.buildUserDTO();
+        User expectedDeletedUser = userMapper.toModel(expectedDeletedUserDTO);
+
+        Long expectedDeletedUserId = expectedDeletedUser.getId();
+        doNothing().when(userRepository).deleteById(expectedDeletedUserId);
+        when(userRepository.findById(expectedDeletedUserId)).thenReturn(Optional.of(expectedDeletedUser));
+
+        userService.delete(expectedDeletedUserId);
+
+        verify(userRepository, times(1)).deleteById(expectedDeletedUserId);
+        verify(userRepository, times(1)).findById(expectedDeletedUserId);
+    }
+
+    @Test
+    void whenDELETEInvalidUserIdIsGivenThenAnExceptionShouldBeThrow() {
+        var expectedInvalidUserId = 2L;
+
+        when(userRepository.findById(expectedInvalidUserId)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.delete(expectedInvalidUserId));
+    }
+
 }

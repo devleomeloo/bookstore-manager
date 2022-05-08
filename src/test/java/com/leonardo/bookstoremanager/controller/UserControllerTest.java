@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.Collections;
+
 import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asJsonString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -112,6 +114,18 @@ class UserControllerTest {
                 .thenReturn(expectedFoundUserDTO);
 
         mockMvc.perform(get(USER_API_URL_PATH + "/" + expectedFoundUserDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void whenGETAllUsersIsCalledThenStatusOkShouldBeReturned() throws Exception {
+        UserDTO expectedFoundUserDTO = userDTOBuilder.buildUserDTO();
+
+        when(userService.findAll())
+                .thenReturn(Collections.singletonList(expectedFoundUserDTO));
+
+        mockMvc.perform(get(USER_API_URL_PATH)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
