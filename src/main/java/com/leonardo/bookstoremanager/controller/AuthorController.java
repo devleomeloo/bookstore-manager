@@ -28,8 +28,7 @@ public class AuthorController implements AuthorControllerDocs{
     }
 
     @GetMapping("{id}")
-    public AuthorDTO findById(
-            @PathVariable Long id) {
+    public AuthorDTO findById(@PathVariable Long id) {
         return authorService.findById(id);
     }
 

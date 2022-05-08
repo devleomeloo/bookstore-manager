@@ -35,9 +35,7 @@ public class AuthorService {
     }
 
     public AuthorDTO findById(Long id){
-        Author foundAuthor = verifyAndGetAuthor(id);
-
-        return authorMapper.toDTO(foundAuthor);
+        return authorMapper.toDTO(verifyAndGetAuthor(id));
     }
 
     public List<AuthorDTO> findAll(){

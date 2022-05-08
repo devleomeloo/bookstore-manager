@@ -22,6 +22,7 @@ import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asJsonStri
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,6 +76,45 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void whenUPDATEIsCalledThenUpdatedStatusShouldBeReturned() throws Exception {
+        UserDTO expectedUserToUpdatedDTO = userDTOBuilder.buildUserDTO();
+        String expectedUpdatedMessage = "User Leo Test with ID 1 successfully updated!";
+        MessageDTO expectedUpdatedMessageDTO = MessageDTO.builder().message(expectedUpdatedMessage).build();
+
+        when(userService.update(expectedUserToUpdatedDTO.getId(), expectedUserToUpdatedDTO))
+                .thenReturn(expectedUpdatedMessageDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.put(USER_API_URL_PATH + "/" + expectedUserToUpdatedDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(expectedUserToUpdatedDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", Matchers.is(expectedUpdatedMessage)));
+    }
+
+    @Test
+    void whenUPDATEDIsCalledWithoutRequiredFieldThenBadRequestStatusShouldBeReturned() throws Exception {
+        UserDTO expectedUserToUpdateDTO = userDTOBuilder.buildUserDTO();
+        expectedUserToUpdateDTO.setUserName(null);
+
+        mockMvc.perform(MockMvcRequestBuilders.put(USER_API_URL_PATH + "/" + expectedUserToUpdateDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(expectedUserToUpdateDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void whenGETWithIdIsCalledThenStatusOkShouldBeReturned() throws Exception {
+
+        UserDTO expectedFoundUserDTO = userDTOBuilder.buildUserDTO();
+
+        when(userService.findById(expectedFoundUserDTO.getId()))
+                .thenReturn(expectedFoundUserDTO);
+
+        mockMvc.perform(get(USER_API_URL_PATH + "/" + expectedFoundUserDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
     @Test
     void whenDELETEWithValidIdIsCalledThenNoContentShouldBeReturned() throws Exception {
         UserDTO expectedUserDeletedDTO = userDTOBuilder.buildUserDTO();

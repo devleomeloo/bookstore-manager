@@ -9,7 +9,11 @@ import com.leonardo.bookstoremanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+
+import static com.leonardo.bookstoremanager.utils.MessageDTOUtils.creationMessage;
+import static com.leonardo.bookstoremanager.utils.MessageDTOUtils.updatedMessage;
 
 @Service
 public class UserService {
@@ -31,6 +35,28 @@ public class UserService {
         return creationMessage(createdUser);
     }
 
+    public MessageDTO update(Long id, UserDTO userToUpdateDTO){
+        User foundUser = verifyAndGetUser(id);
+        userToUpdateDTO.setId(foundUser.getId());
+
+        User userToUpdate = userMapper.toModel(userToUpdateDTO);
+        userToUpdate.setCreatedDate(foundUser.getCreatedDate());
+
+        User updatedUser = userRepository.save(userToUpdate);
+        return updatedMessage(updatedUser);
+    }
+
+    public UserDTO findById(Long id){
+        return userMapper.toDTO(verifyAndGetUser(id));
+    }
+
+    public List<UserDTO> findAll(){
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::toDTO)
+                .toList();
+    }
+
     public void delete(Long id){
         verifyAndGetUser(id);
         userRepository.deleteById(id);
@@ -46,12 +72,5 @@ public class UserService {
         if (foundUser.isPresent()){
             throw new UserAlreadyExistsException(userEmail, userName);
         }
-    }
-
-    private MessageDTO creationMessage(User createdUser) {
-        String createdUserMessage = String.format("User %s with ID %s successfully created!", createdUser.getName(), createdUser.getId());
-        return MessageDTO.builder()
-                .message(createdUserMessage)
-                .build();
     }
 }

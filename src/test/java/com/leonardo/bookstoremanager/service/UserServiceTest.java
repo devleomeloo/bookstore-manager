@@ -94,4 +94,32 @@ class UserServiceTest {
 
         assertThrows(UserNotFoundException.class, () -> userService.delete(expectedInvalidUserId));
     }
+
+    @Test
+    void whenExistingUserIsInformedThenItShouldBeUpdated(){
+        UserDTO expectedUpdatedUserDTO = userDTOBuilder.buildUserDTO();
+        User expectedUpdatedUser = userMapper.toModel(expectedUpdatedUserDTO);
+        String expectedUpdateMessage = "User Leo Test with ID 1 successfully updated!";
+
+        when(userRepository.findById(expectedUpdatedUserDTO.getId()))
+                .thenReturn(Optional.of(expectedUpdatedUser));
+        when(userRepository.save(expectedUpdatedUser))
+                .thenReturn(expectedUpdatedUser);
+
+        MessageDTO updatedMessage = userService.update(expectedUpdatedUserDTO.getId(), expectedUpdatedUserDTO);
+
+        assertThat(expectedUpdateMessage, is(equalTo(updatedMessage.getMessage())));
+    }
+
+    @Test
+    void whenNotExistingUserIsInformedThenAnExceptionShouldBeThrown(){
+        UserDTO expectedUpdatedUserDTO = userDTOBuilder.buildUserDTO();
+        User expectedUpdatedUser = userMapper.toModel(expectedUpdatedUserDTO);
+
+        when(userRepository.findById(expectedUpdatedUser.getId()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () ->
+                userService.update(expectedUpdatedUser.getId(), expectedUpdatedUserDTO));
+    }
 }

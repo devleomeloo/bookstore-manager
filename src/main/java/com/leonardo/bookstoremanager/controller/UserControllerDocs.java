@@ -19,6 +19,13 @@ public interface UserControllerDocs {
     })
     MessageDTO create(UserDTO userToCreateDTO);
 
+    @ApiOperation(value = "User update operation")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,message = "Success user updated"),
+            @ApiResponse(code = 400, message = "Missing required field or an error on validation field rules")
+    })
+     MessageDTO update(Long id,UserDTO userToUpdateDTO);
+
     @ApiOperation(value = "Find User by id operation")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success - User found"),
