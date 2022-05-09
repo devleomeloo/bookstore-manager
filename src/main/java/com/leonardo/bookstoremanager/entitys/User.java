@@ -1,6 +1,7 @@
 package com.leonardo.bookstoremanager.entitys;
 
 import com.leonardo.bookstoremanager.enums.Gender;
+import com.leonardo.bookstoremanager.enums.Role;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,7 +11,6 @@ import java.util.List;
 @Data
 @Entity
 public class User extends Auditable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,4 +39,8 @@ public class User extends Auditable {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Book> books;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;
 }

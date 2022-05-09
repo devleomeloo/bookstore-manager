@@ -2,6 +2,7 @@ package com.leonardo.bookstoremanager.users.builder;
 
 import com.leonardo.bookstoremanager.dto.UserDTO;
 import com.leonardo.bookstoremanager.enums.Gender;
+import com.leonardo.bookstoremanager.enums.Role;
 import lombok.Builder;
 import java.time.LocalDate;
 
@@ -32,6 +33,9 @@ public class UserDTOBuilder {
     @Builder.Default
     private LocalDate birthDate = LocalDate.of(1994, 3, 15);
 
+    @Builder.Default
+    private Role role = Role.USER;
+
     public UserDTO buildUserDTO(){
         return new UserDTO(
                 id,
@@ -41,7 +45,8 @@ public class UserDTOBuilder {
                 email,
                 userName,
                 password,
-                birthDate
+                birthDate,
+                role
         );
     }
 }

@@ -3,6 +3,7 @@ package com.leonardo.bookstoremanager.service;
 import com.leonardo.bookstoremanager.dto.MessageDTO;
 import com.leonardo.bookstoremanager.dto.UserDTO;
 import com.leonardo.bookstoremanager.entitys.User;
+import com.leonardo.bookstoremanager.enums.Role;
 import com.leonardo.bookstoremanager.exception.UserAlreadyExistsException;
 import com.leonardo.bookstoremanager.mapper.UserMapper;
 import com.leonardo.bookstoremanager.repository.UserRepository;
@@ -118,6 +119,7 @@ class UserServiceTest {
                 .thenReturn(Optional.of(expectedFoundUser));
 
         UserDTO foundUser = userService.findById(expectedFoundUserDTO.getId());
+        foundUser.setRole(Role.USER);
 
         assertThat(foundUser, is(equalTo(expectedFoundUserDTO)));
 
@@ -132,6 +134,7 @@ class UserServiceTest {
                 .thenReturn(Collections.singletonList(expectedFoundUser));
 
         List<UserDTO> foundUsers = userService.findAll();
+        foundUsers.get(0).setRole(Role.USER);
 
         assertThat(foundUsers, is(equalTo(expectedFoundUserDTO)));
 

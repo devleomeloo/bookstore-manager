@@ -2,6 +2,7 @@ package com.leonardo.bookstoremanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leonardo.bookstoremanager.enums.Gender;
+import com.leonardo.bookstoremanager.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,4 +44,8 @@ public class UserDTO {
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private Role role;
 }
