@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @AllArgsConstructor
-public class AuthenticationUser implements UserDetails {
+public class AuthenticatedUser implements UserDetails {
 
     private static final String ROLE_PREFIX = "ROLE_";
 
