@@ -7,6 +7,7 @@ import com.leonardo.bookstoremanager.exception.UserAlreadyExistsException;
 import com.leonardo.bookstoremanager.mapper.UserMapper;
 import com.leonardo.bookstoremanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,14 +23,20 @@ public class UserService {
 
     private UserRepository userRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public MessageDTO create(UserDTO userToCreateDTO){
         verifyIfExists(userToCreateDTO.getEmail(), userToCreateDTO.getUserName());
         User userToCreate = userMapper.toModel(userToCreateDTO);
+
+        userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+
         User createdUser = userRepository.save(userToCreate);
 
         return creationMessage(createdUser);
@@ -41,6 +48,7 @@ public class UserService {
 
         User userToUpdate = userMapper.toModel(userToUpdateDTO);
         userToUpdate.setCreatedDate(foundUser.getCreatedDate());
+        userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
 
         User updatedUser = userRepository.save(userToUpdate);
         return updatedMessage(updatedUser);
