@@ -33,7 +33,7 @@ public class AuthenticationServiceTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private AuthenticatonService authenticatonService;
+    private AuthenticationService authenticationService;
 
     private UserDTOBuilder userDTOBuilder;
 
@@ -53,7 +53,7 @@ public class AuthenticationServiceTest {
         Mockito.when(userRepository.findByUserName(expectedUserName))
                 .thenReturn(Optional.of(expectedFoundUser));
 
-        UserDetails userDetails = authenticatonService.loadUserByUsername(expectedUserName);
+        UserDetails userDetails = authenticationService.loadUserByUsername(expectedUserName);
 
         assertThat(userDetails.getUsername(), is(equalTo(expectedFoundUser.getUserName())));
         assertThat(userDetails.getPassword(), is(equalTo(expectedFoundUser.getPassword())));
@@ -68,6 +68,6 @@ public class AuthenticationServiceTest {
         Mockito.when(userRepository.findByUserName(expectedUserName))
                 .thenReturn(Optional.empty());
 
-        assertThrows(UsernameNotFoundException.class, () -> authenticatonService.loadUserByUsername(expectedUserName));
+        assertThrows(UsernameNotFoundException.class, () -> authenticationService.loadUserByUsername(expectedUserName));
     }
 }
