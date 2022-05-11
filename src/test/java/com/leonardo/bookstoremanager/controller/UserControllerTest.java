@@ -1,10 +1,13 @@
 package com.leonardo.bookstoremanager.controller;
 
+import com.leonardo.bookstoremanager.authentication.builder.JwtRequestBuilder;
+import com.leonardo.bookstoremanager.dto.JwtRequest;
+import com.leonardo.bookstoremanager.dto.JwtResponse;
 import com.leonardo.bookstoremanager.dto.MessageDTO;
 import com.leonardo.bookstoremanager.dto.UserDTO;
+import com.leonardo.bookstoremanager.service.AuthenticationService;
 import com.leonardo.bookstoremanager.service.UserService;
 import com.leonardo.bookstoremanager.users.builder.UserDTOBuilder;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,10 +24,10 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import java.util.Collections;
 
 import static com.leonardo.bookstoremanager.utils.JsonConversionUtils.asJsonString;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +37,9 @@ class UserControllerTest {
     private static final String USER_API_URL_PATH = "/api/v1/users";
 
     @Mock
+    private AuthenticationService authenticationService;
+
+    @Mock
     private UserService userService;
 
     @InjectMocks
@@ -41,11 +47,15 @@ class UserControllerTest {
 
     private MockMvc mockMvc;
 
-    UserDTOBuilder userDTOBuilder;
+    private UserDTOBuilder userDTOBuilder;
+
+    private JwtRequestBuilder jwtRequestBuilder;
+
 
     @BeforeEach
     void setUp() {
         userDTOBuilder = UserDTOBuilder.builder().build();
+        jwtRequestBuilder = JwtRequestBuilder.builder().build();
         mockMvc = MockMvcBuilders.standaloneSetup(userController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setViewResolvers((s, locale) -> new MappingJackson2JsonView())
@@ -60,11 +70,11 @@ class UserControllerTest {
 
         when(userService.create(expectedUserToCreateDTO)).thenReturn(expectedCreationMessageDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(USER_API_URL_PATH)
+        mockMvc.perform(post(USER_API_URL_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(expectedUserToCreateDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.message", Matchers.is(expectedCreationMessage)));
+                .andExpect(jsonPath("$.message", is(expectedCreationMessage)));
     }
 
     @Test
@@ -72,7 +82,7 @@ class UserControllerTest {
         UserDTO expectedUserToCreateDTO = userDTOBuilder.buildUserDTO();
         expectedUserToCreateDTO.setUserName(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(USER_API_URL_PATH)
+        mockMvc.perform(post(USER_API_URL_PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(expectedUserToCreateDTO)))
                 .andExpect(status().isBadRequest());
@@ -91,7 +101,7 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(expectedUserToUpdatedDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message", Matchers.is(expectedUpdatedMessage)));
+                .andExpect(jsonPath("$.message", is(expectedUpdatedMessage)));
     }
 
     @Test
@@ -140,5 +150,31 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
+    }
+
+    @Test
+    void whenPOSTIsCalledToAuthenticateUserThenOkShouldBeReturned() throws Exception {
+        JwtRequest jwtRequest = jwtRequestBuilder.buildJwtRequest();
+        JwtResponse expectedJwtToken = JwtResponse.builder().jwtToken("fakeToken").build();
+
+        when(authenticationService.createAuthenticationToken(jwtRequest))
+                .thenReturn(expectedJwtToken);
+
+        mockMvc.perform(post(USER_API_URL_PATH + "/authenticate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(jwtRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwtToken", is(expectedJwtToken.getJwtToken())));
+    }
+
+    @Test
+    void whenPOSTIsCalledToAuthenticateUserWithoutPasswordFieldThenAnBadRequestShouldBeReturned() throws Exception {
+        JwtRequest jwtRequest = jwtRequestBuilder.buildJwtRequest();
+        jwtRequest.setPassword(null);
+
+        mockMvc.perform(post(USER_API_URL_PATH + "/authenticate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(jwtRequest)))
+                .andExpect(status().isBadRequest());
     }
 }
