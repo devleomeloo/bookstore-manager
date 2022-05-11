@@ -1,5 +1,8 @@
 package com.leonardo.bookstoremanager.service;
 
+import com.leonardo.bookstoremanager.authentication.builder.JwtRequestBuilder;
+import com.leonardo.bookstoremanager.dto.JwtRequest;
+import com.leonardo.bookstoremanager.dto.JwtResponse;
 import com.leonardo.bookstoremanager.dto.UserDTO;
 import com.leonardo.bookstoremanager.entitys.User;
 import com.leonardo.bookstoremanager.mapper.UserMapper;
@@ -10,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +26,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
@@ -35,11 +40,38 @@ public class AuthenticationServiceTest {
     @InjectMocks
     private AuthenticationService authenticationService;
 
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtTokenManager jwtTokenManager;
+
+    private JwtRequestBuilder jwtRequestBuilder;
+
     private UserDTOBuilder userDTOBuilder;
 
     @BeforeEach
     void setup(){
         userDTOBuilder = UserDTOBuilder.builder().build();
+        jwtRequestBuilder = JwtRequestBuilder.builder().build();
+    }
+
+    @Test
+    void whenUserNameAndPasswordIsInformedThenATokenShouldBeGenerated() {
+
+        JwtRequest jwtRequest = jwtRequestBuilder.buildJwtRequest();
+        UserDTO expectedFoundUserDTO = userDTOBuilder.buildUserDTO();
+        User expectedFoundUser = userMapper.toModel(expectedFoundUserDTO);
+        String expectedGeneratedToken = "fakeToken";
+
+        when(userRepository.findByUserName(jwtRequest.getUserName()))
+                .thenReturn(Optional.of(expectedFoundUser));
+        when(jwtTokenManager.generateToken(any(UserDetails.class)))
+                .thenReturn(expectedGeneratedToken);
+
+        JwtResponse generatedTokenResponse = authenticationService.createAuthenticationToken(jwtRequest);
+
+        assertThat(generatedTokenResponse.getJwtToken(), is(equalTo(expectedGeneratedToken)));
     }
 
     @Test
@@ -50,7 +82,7 @@ public class AuthenticationServiceTest {
         SimpleGrantedAuthority expectedUserRole = new SimpleGrantedAuthority("ROLE_" + expectedFoundUserDTO.getRole().getDescription());
 
         String expectedUserName = expectedFoundUserDTO.getUserName();
-        Mockito.when(userRepository.findByUserName(expectedUserName))
+        when(userRepository.findByUserName(expectedUserName))
                 .thenReturn(Optional.of(expectedFoundUser));
 
         UserDetails userDetails = authenticationService.loadUserByUsername(expectedUserName);
@@ -65,7 +97,7 @@ public class AuthenticationServiceTest {
         UserDTO expectedFoundUserDTO = userDTOBuilder.buildUserDTO();
 
         String expectedUserName = expectedFoundUserDTO.getUserName();
-        Mockito.when(userRepository.findByUserName(expectedUserName))
+        when(userRepository.findByUserName(expectedUserName))
                 .thenReturn(Optional.empty());
 
         assertThrows(UsernameNotFoundException.class, () -> authenticationService.loadUserByUsername(expectedUserName));
