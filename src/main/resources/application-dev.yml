@@ -20,3 +20,8 @@ logging:
     br:
       com:
         leonardo: DEBUG
+
+
+jwt:
+  secret: bookstoremanager
+  validity: 18000
