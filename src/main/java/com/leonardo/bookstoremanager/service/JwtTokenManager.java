@@ -54,11 +54,10 @@ public class JwtTokenManager {
     }
 
     private Claims getAllClaimsForToken(String token) {
-        Claims claims = Jwts.parser()
+        return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
-        return claims;
     }
 
     public boolean validateToken(String token, UserDetails userDetails){
