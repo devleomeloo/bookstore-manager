@@ -26,7 +26,7 @@ public class AuthenticationService implements UserDetailsService {
     private JwtTokenManager jwtTokenManager;
 
     public JwtResponse createAuthenticationToken(JwtRequest jwtRequest){
-        String userName = jwtRequest.getUserName();
+        String userName = jwtRequest.getUsername();
         authenticate(userName, jwtRequest.getPassword());
 
         UserDetails userDetails = this.loadUserByUsername(userName);

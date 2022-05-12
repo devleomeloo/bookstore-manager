@@ -64,7 +64,7 @@ public class AuthenticationServiceTest {
         User expectedFoundUser = userMapper.toModel(expectedFoundUserDTO);
         String expectedGeneratedToken = "fakeToken";
 
-        when(userRepository.findByUserName(jwtRequest.getUserName()))
+        when(userRepository.findByUserName(jwtRequest.getUsername()))
                 .thenReturn(Optional.of(expectedFoundUser));
         when(jwtTokenManager.generateToken(any(UserDetails.class)))
                 .thenReturn(expectedGeneratedToken);
