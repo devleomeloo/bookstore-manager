@@ -32,10 +32,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String ROLE_ADMIN = Role.ADMIN.getDescription();
     private static final String ROLE_USER = Role.USER.getDescription();
 
+    private JwtRequestFilter jwtRequestFilter;
+
     private static final String[] SWAGGER_RESOURCES = {
+            // -- swagger ui
             "/v2/api-docs",
             "/swagger-resources",
-            "swagger-resources/**",
+            "/swagger-resources/**",
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui.html",
@@ -43,16 +46,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
     private UserDetailsService userDetailsService;
-
     private PasswordEncoder passwordEncoder;
-
-    private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean
