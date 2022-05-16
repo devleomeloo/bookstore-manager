@@ -54,6 +54,7 @@ public class BookService {
         return bookRepository.findByIdAndUser(bookId, foundAuthenticatedUser)
                 .map(bookMapper::toDTO)
                 .orElseThrow(() -> new BookNotFoundException(bookId));
+
     }
 
     public List<BookResponseDTO> findAllByUser(AuthenticatedUser authenticatedUser) {
