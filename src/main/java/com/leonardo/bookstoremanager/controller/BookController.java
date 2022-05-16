@@ -1,13 +1,16 @@
 package com.leonardo.bookstoremanager.controller;
 
+import com.leonardo.bookstoremanager.dto.AuthenticatedUser;
+import com.leonardo.bookstoremanager.dto.BookRequestDTO;
+import com.leonardo.bookstoremanager.dto.BookResponseDTO;
 import com.leonardo.bookstoremanager.service.BookService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -20,12 +23,39 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @ApiOperation(value = "API Example")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success")
-    })
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookResponseDTO create(
+            @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+            @RequestBody @Valid BookRequestDTO bookRequestDTO) {
+        return bookService.create(authenticatedUser, bookRequestDTO);
+    }
+
+    @GetMapping("/{bookId}")
+    public BookResponseDTO findByIdAndUser(
+            @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+            @PathVariable Long bookId) {
+        return bookService.findByIdAndUser(authenticatedUser, bookId);
+    }
+
     @GetMapping
-    public String test(){
-        return "BookStore Manager API !";
+    public List<BookResponseDTO> findAllByUser(@AuthenticationPrincipal AuthenticatedUser authenticatedUser) {
+        return bookService.findAllByUser(authenticatedUser);
+    }
+
+    @DeleteMapping("/{bookId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByIdAndUser(
+            @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+            @PathVariable Long bookId) {
+        bookService.deleteByIdAndUser(authenticatedUser, bookId);
+    }
+
+    @PutMapping("/{bookId}")
+    public BookResponseDTO updateByIdAndUser(
+            @AuthenticationPrincipal AuthenticatedUser authenticatedUser,
+            @PathVariable Long bookId,
+            @RequestBody @Valid BookRequestDTO bookRequestDTO) {
+        return bookService.updateByIdAndUser(authenticatedUser, bookId, bookRequestDTO);
     }
 }

@@ -1,12 +1,13 @@
-package books.builder;
+package com.leonardo.bookstoremanager.builder.books;
 
-import com.leonardo.bookstoremanager.dto.BookRequestDTO;
-import com.leonardo.bookstoremanager.dto.UserDTO;
+import com.leonardo.bookstoremanager.author.builder.AuthorDTOBuilder;
+import com.leonardo.bookstoremanager.dto.*;
+import com.leonardo.bookstoremanager.publishers.builder.PublisherDTOBuilder;
 import com.leonardo.bookstoremanager.users.builder.UserDTOBuilder;
 import lombok.Builder;
 
 @Builder
-public class BookRequestDTOBuilder {
+public class BookResponseDTOBuilder {
 
     @Builder.Default
     private Long id =  1L;
@@ -24,23 +25,23 @@ public class BookRequestDTOBuilder {
     private Integer chapters = 10;
 
     @Builder.Default
-    private Long authorId = 3L;
+    private AuthorDTO author = AuthorDTOBuilder.builder().build().buildAuthorDTO();
 
     @Builder.Default
-    private Long publisherId = 2L;
+    private PublisherDTO publisher = PublisherDTOBuilder.builder().build().buildPublisherDTO();
 
     @Builder.Default
     private UserDTO userDTO = UserDTOBuilder.builder().build().buildUserDTO();
 
-    public BookRequestDTO buildRequestBookDTO(){
-        return new BookRequestDTO(
+    public BookResponseDTO buildBookResponse(){
+        return new BookResponseDTO(
                 id,
                 name,
                 isbn,
                 pages,
                 chapters,
-                authorId,
-                publisherId
+                author,
+                publisher
         );
     }
 }
