@@ -1,0 +1,1184 @@
+{
+	"info": {
+		"_postman_id": "7d12418b-a06a-4659-9abf-3f90972e5169",
+		"name": "Bookstore Manager APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Leo Melo2\",\n\t\"age\" : 27,\n    \"email\": \"leo2@test.com\",\n    \"gender\": \"MALE\",\n    \"userName\": \"LeoMelo2\",\n    \"password\": \"corinthians\",\n    \"birthDate\": \"15/03/1994\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/users",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"LeoMelo\",\r\n    \"password\": \"corinthians\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/users/authenticate",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Leo Melo212\",\n\t\"age\" : 27,\n    \"email\": \"leo@test.com\",\n    \"gender\": \"MALE\",\n    \"userName\": \"LeoMelo\",\n    \"password\": \"corinthians\",\n    \"birthDate\": \"15/03/1994\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/users/:userId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/users/:userId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/users",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/users/:userId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Author",
+			"item": [
+				{
+					"name": "Create Author",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Leo Melo\",\n\t\"age\" : 27\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/authors",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/authors/:authorId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authors",
+								":authorId"
+							],
+							"variable": [
+								{
+									"key": "authorId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Authors",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/authors",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Author by id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/authors/:authorId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authors",
+								":authorId"
+							],
+							"variable": [
+								{
+									"key": "authorId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Publisher",
+			"item": [
+				{
+					"name": "Create Publisher",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Leo Melo\",\n\t\"code\" : \"1910\",\n\t\"foundationDate\" : \"05/11/2021\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/publishers",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"publishers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consult All Publishers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/publishers",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"publishers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consult Publisher",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/publishers/1",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"publishers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Publisher by id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/publishers/:publisherId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"publishers",
+								":publisherId"
+							],
+							"variable": [
+								{
+									"key": "publisherId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Create Book",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Spring Book 2\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"pages\": 100,\n    \"chapters\": 10,\n    \"authorId\": 1,\n    \"publisherId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/books",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Book",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\" : \"Spring Book 2\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"pages\": 1001,\n    \"chapters\": 10,\n    \"authorId\": 1,\n    \"publisherId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{bookstore}}/api/v1/books/:bookId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Book by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo2\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/books/:bookId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Books by user authenticated",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/books",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Book by id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const tokenUrl = pm.environment.get(\"bookstore\") + pm.environment.get(\"jwtTokenURL\");\r",
+									"\r",
+									"//const clientId = pm.environment.get(\"client_id\");\r",
+									"//const clientSecret = pm.environment.get(\"client_secret\");\r",
+									"//const grant_type\r",
+									"\r",
+									"const getTokenRequest = {\r",
+									"  method: 'POST',\r",
+									"  url: tokenUrl,\r",
+									"    'header': {\r",
+									"    'Content-Type': 'application/json'\r",
+									"  },\r",
+									"  body: {\r",
+									"      mode: 'raw',\r",
+									"      raw: JSON.stringify({\r",
+									"            username: \"LeoMelo\",\r",
+									"            password: \"corinthians\"\r",
+									"        })\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.sendRequest(getTokenRequest, function (err, response) {\r",
+									"  const jsonResponse = response.json();\r",
+									"  const newAccessToken = jsonResponse.jwtToken;\r",
+									"\r",
+									"  pm.environment.set('jwtToken', newAccessToken);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{bookstore}}/api/v1/books/:bookId",
+							"host": [
+								"{{bookstore}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"books",
+								":bookId"
+							],
+							"variable": [
+								{
+									"key": "bookId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "jwtToken",
+			"value": ""
+		}
+	]
+}
