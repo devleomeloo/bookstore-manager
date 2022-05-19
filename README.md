@@ -1,7 +1,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.leonardo%3Abookstoremanager&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=com.leonardo%3Abookstoremanager) [![Build Status](https://app.travis-ci.com/devleomeloo/bookstore-manager.svg?branch=main)](https://app.travis-ci.com/devleomeloo/bookstore-manager)
 <h2>Bookstore API Manager</h2>
 
-O objetivo do projeto Bookstore API Manager é disponibilizar uma API para cadastro dos livros de uma livraria através de uma API REST.
+O objetivo do projeto Bookstore API Manager é disponibilizar APIs REST para cadastro de livros, autores, editoras e usuario de uma livraria ficticia.
 
 O projeto foi desenvolvido como base do curso completo sobre Spring Boot, publicado na Udemy em agosto de 2020.
 
@@ -40,26 +40,20 @@ http://localhost:8080/swagger-ui.html
 
 Após executar o comando acima, basta apenas abrir o seguinte endereço e visualizar a execução do projeto:
 
-As seguintes ferramentas abaixo são utilizadas como part do desenvolvimento do projeto prático do curso:
+As seguintes ferramentas abaixo são utilizadas como parte do desenvolvimento do projeto prático do curso:
 
-* Java 14 ou versões superiores.
-* Maven 3.6.3 ou versões superiores.
+* Java 18.
+* Maven 3.6.3.
 * SDKMan! para o gerenciamento de múltiplcas versões de Java, Maven e Spring Boot.
 * Banco de dados H2 como SGBD do nosso projeto (em ambos ambientes, Dev e Prod)
-* Intellj IDEA Community Edition ou sua IDE favorita.
-* Controle de versão GIT instalado na sua máquina.
-* SonarCloud para verificaçao da qualidade de código do nosso projeto.
+* Intellj IDEA Community Edition.
+* Controle de versão GIT.
+* SonarCloud para verificaçao da qualidade de código.
 * TravisCI como ferramenta de integração contínua.
 * Swagger 2 para a documentação de todos os endpoints desenvolvidos dentro do projeto.
-* Conta no GitHub para o armazenamento do seu projeto na nuvem.
+* Conta no GitHub para o armazenamento do projeto na nuvem.
 * Conta no Heroku para o deploy do projeto na nuvem
 * Postman para execução de testes de integração para a validação de ponta a ponta da API.
-
-Abaixo, segue o link do projeto implantado no Heroku:
-
-```
-https://bookstoremanager-course.herokuapp.com/api/v1/books
-```
 
 O link da documentação no Heroku, implementada também atraves do Swagger, está no link abaixo:
 
