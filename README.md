@@ -55,3 +55,4 @@ As seguintes ferramentas abaixo são utilizadas como parte do desenvolvimento do
 * Conta no Heroku para o deploy do projeto na nuvem
 * Postman para execução de testes de integração para a validação de ponta a ponta da API.
 
+Link da aplicação no Heroku:
