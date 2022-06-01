@@ -19,7 +19,7 @@ Link do recurso para consultar usuários cadastrados no Heroku:
 https://bookstoremanager-heroku-prod.herokuapp.com/api/v1/users
 ```
 
-* OBS: Para acessar os outros endpoints, há uma pasta na raiz do projeto chamada 'postman-collections', 
+* OBS: Para acessar os outros endpoints, há uma pasta na raiz do projeto chamada "postman-collections", 
 contendo a chamada de todos os recursos, com as environments local e produção (Heroku) para serem importadas no Postman.
 
 As seguintes tecnologias são utilizadas como parte do desenvolvimento do projeto:
