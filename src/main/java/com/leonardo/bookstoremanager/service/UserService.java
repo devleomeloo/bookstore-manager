@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.leonardo.bookstoremanager.utils.MessageDTOUtils.creationMessage;
 import static com.leonardo.bookstoremanager.utils.MessageDTOUtils.updatedMessage;
@@ -63,7 +62,7 @@ public class UserService {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void delete(Long id){
