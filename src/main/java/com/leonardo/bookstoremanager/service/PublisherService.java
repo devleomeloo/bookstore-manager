@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PublisherService {
@@ -45,7 +46,7 @@ public class PublisherService {
         return publisherRepository.findAll()
                 .stream()
                 .map(publisherMapper::toDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public void delete(Long id){
