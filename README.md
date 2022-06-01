@@ -56,3 +56,4 @@ As seguintes ferramentas abaixo são utilizadas como parte do desenvolvimento do
 * Postman para execução de testes de integração para a validação de ponta a ponta da API.
 
 Link da aplicação no Heroku:
+{{bookstore}}/api/v1/users
