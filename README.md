@@ -9,20 +9,15 @@ O projeto foi desenvolvido como base do curso completo sobre Spring Boot, public
 https://www.udemy.com/course/spring-boot-api/
 ```
 
-Para abrir a documentação (disponibilizada através do Swagger 2) de todas as operações implementadas com o padrão arquitetural REST, acesse o seguinte link abaixo:
+Para abrir a documentação de todas as operações implementadas no padrão REST, acesse o seguinte link após rodar o projeto:
 ```
-https://bookstoremanager-heroku-prod.herokuapp.com/swagger-ui.html#/
-```
-
-Link do recurso para consultar usuários cadastrados no Heroku:
-```
-https://bookstoremanager-heroku-prod.herokuapp.com/api/v1/users
+http://localhost:8080/swagger-ui.html#/
 ```
 
-* OBS: Para acessar os outros endpoints, há uma pasta na raiz do projeto chamada "postman-collections", 
+* OBS: Há uma pasta na raiz do projeto chamada "postman-collections", 
 contendo a chamada de todos os recursos, com as environments local e produção (Heroku) para serem importadas no Postman.
 
-As seguintes tecnologias são utilizadas como parte do desenvolvimento do projeto:
+As seguintes tecnologias foram utilizadas como parte do desenvolvimento do projeto:
 
 * Java 18.
 * Maven 3.6.3.
